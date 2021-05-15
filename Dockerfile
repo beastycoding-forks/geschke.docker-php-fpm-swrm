@@ -8,7 +8,7 @@ LABEL last_changed="2021-05-15"
 ENV DEBIAN_FRONTEND noninteractive 
 ENV LANG en_US.utf8
 
-# Install PHP 7.4 with some libraries
+# Install PHP 8.0 with some libraries
 RUN apt-get update \
 	&& apt-get -y upgrade \
 	&& apt-get -y dist-upgrade \
@@ -19,11 +19,11 @@ RUN apt-get update \
 	&& apt-get update \
 	#&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
 	&& apt-get install -y git ssmtp wget \
-	&& apt-get install -y php7.4-fpm \
-	php7.4-curl php7.4-mysql php7.4-intl \
-    php7.4-mbstring php7.4-bz2 php7.4-pgsql php7.4-xml php7.4-xsl php7.4-sqlite3 \
-	php7.4-opcache php7.4-zip php7.4-gd php7.4-redis php7.4-memcache php7.4-json \
-	php7.4-mongodb php7.4-mcrypt php7.4-bcmath php7.4-protobuf php7.4-imagick \
+	&& apt-get install -y php8.0-fpm \
+	php8.0-curl php8.0-mysql php8.0-intl \
+    php8.0-mbstring php8.0-bz2 php8.0-pgsql php8.0-xml php8.0-xsl php8.0-sqlite3 \
+	php8.0-opcache php8.0-zip php8.0-gd php8.0-redis php8.0-memcache \
+	php8.0-mongodb php8.0-mcrypt php8.0-bcmath php8.0-protobuf php8.0-imagick \
 	&& rm -rf /var/lib/apt/lists/* 
 	
 	#\
@@ -40,7 +40,7 @@ RUN cd /tmp/ \
 
 # taken from official Docker PHP image
 RUN set -ex \
-	&& cd /etc/php/7.4/fpm \
+	&& cd /etc/php/8.0/fpm \
 	&& mkdir /run/php \
 	&& { \
 	echo '[global]'; \
@@ -68,4 +68,4 @@ WORKDIR /usr/share/nginx/html
 
 EXPOSE 9000
 
-CMD ["php-fpm7.4"]
+CMD ["php-fpm8.0"]
