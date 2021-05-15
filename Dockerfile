@@ -1,11 +1,12 @@
-FROM ubuntu:focal-20210416
+FROM ubuntu:hirsute-20210422
 
 LABEL maintainer="Ralf Geschke <ralf@kuerbis.org>"
 
-LABEL last_changed="2021-05-13"
+LABEL last_changed="2021-05-15"
 
 # necessary to set default timezone Etc/UTC
 ENV DEBIAN_FRONTEND noninteractive 
+ENV LANG en_US.utf8
 
 # Install PHP 7.4 with some libraries
 RUN apt-get update \
@@ -13,18 +14,22 @@ RUN apt-get update \
 	&& apt-get -y dist-upgrade \
 	&& apt-get install -y ca-certificates \
 	&& apt-get install -y --no-install-recommends \
-	&& apt-get install -y locales \
-	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
-	&& apt-get install -y git ssmtp wget php-fpm \
-	php-mysql php-curl php-intl \
-	php-mbstring php-bz2 php-pgsql php-xml php-xsl php-sqlite3 \
-	php-opcache php-zip php-gd php-redis php-memcache php-zip \
-	php-json php-intl \
+	&& apt-get install -y locales software-properties-common \
+	&& add-apt-repository -y ppa:ondrej/php \
+	&& apt-get update \
+	#&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
+	&& apt-get install -y git ssmtp wget \
+	&& apt-get install -y php7.4-fpm \
+	php7.4-curl php7.4-mysql php7.4-intl \
+    php7.4-mbstring php7.4-bz2 php7.4-pgsql php7.4-xml php7.4-xsl php7.4-sqlite3 \
+	php7.4-opcache php7.4-zip php7.4-gd php7.4-redis php7.4-memcache php7.4-json \
+	php7.4-mongodb php7.4-mcrypt php7.4-bcmath php7.4-protobuf \
 	&& rm -rf /var/lib/apt/lists/* 
+	
+	#\
 #	&& cp /usr/share/zoneinfo/Etc/UTC /etc/localtime
 # php-recode
 
-ENV LANG en_US.utf8
 
 # Install composer
 COPY install-composer.sh /tmp 
@@ -36,7 +41,7 @@ RUN cd /tmp/ \
 # taken from official Docker PHP image
 RUN set -ex \
 	&& cd /etc/php/7.4/fpm \
-	#&& mkdir /run/php \
+	&& mkdir /run/php \
 	&& { \
 	echo '[global]'; \
 	echo 'error_log = /proc/self/fd/2'; \
