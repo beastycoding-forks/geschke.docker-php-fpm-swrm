@@ -2,7 +2,7 @@ FROM ubuntu:focal-20210416
 
 LABEL maintainer="Ralf Geschke <ralf@kuerbis.org>"
 
-LABEL last_changed="2021-05-15"
+LABEL last_changed="2021-06-05"
 
 # necessary to set default timezone Etc/UTC
 ENV DEBIAN_FRONTEND noninteractive 
