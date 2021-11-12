@@ -79,9 +79,6 @@ jobs:
             type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
             type=ref,event=tag
             type=match,event=tag,pattern=v(.*)
-            #type=semver,pattern={{version}} # not a valid semver
-            #type=semver,pattern={{major}}.{{minor}} # see above
-            #type=semver,pattern={{major}}   # see above
             type=sha # works, but not needed here
           flavor: |
             latest=false
