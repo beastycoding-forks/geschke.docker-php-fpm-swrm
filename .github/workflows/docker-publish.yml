@@ -64,8 +64,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Login to Docker Hub
+      # Login to Docker Hub (default when no registry variable exists)
       - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -87,8 +88,7 @@ jobs:
             type=match,pattern=v(.*),group=1
           flavor: |
             latest=false
-          images: ${{ env.REGISTRY_DOCKER_HUB }}/${{ env.IMAGE_NAME }}
-          #images: ${{ env.REGISTRY_GITHUB }}/${{ env.IMAGE_NAME }},${{ env.REGISTRY_DOCKER_HUB }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY_DOCKER_HUB }}/${{ env.IMAGE_NAME }},${{ env.REGISTRY_GITHUB }}/${{ env.IMAGE_NAME }}
 
       - name: Show some information after meta run
         id: showinfo
