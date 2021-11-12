@@ -87,7 +87,8 @@ jobs:
             type=match,pattern=v(.*),group=1
           flavor: |
             latest=false
-          images: ${{ env.REGISTRY_GITHUB }}/${{ env.IMAGE_NAME }},${{ env.REGISTRY_DOCKER_HUB }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY_DOCKER_HUB }}/${{ env.IMAGE_NAME }}
+          #images: ${{ env.REGISTRY_GITHUB }}/${{ env.IMAGE_NAME }},${{ env.REGISTRY_DOCKER_HUB }}/${{ env.IMAGE_NAME }}
 
       - name: Show some information after meta run
         id: showinfo
