@@ -79,7 +79,6 @@ jobs:
             type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
             type=ref,event=tag
             type=match,event=tag,pattern=v(.*)
-            type=sha # works, but not needed here
           flavor: |
             latest=false
           images: ${{ env.REGISTRY_GITHUB }}/${{ env.IMAGE_NAME }},${{ env.REGISTRY_DOCKER_HUB }}/${{ env.IMAGE_NAME }}
