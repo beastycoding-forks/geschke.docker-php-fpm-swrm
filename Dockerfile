@@ -1,8 +1,8 @@
-FROM ubuntu:hirsute-20210917
+FROM ubuntu:hirsute-20211106
 
 LABEL maintainer="Ralf Geschke <ralf@kuerbis.org>"
 
-LABEL last_changed="2021-10-09"
+LABEL last_changed="2021-11-13"
 
 # necessary to set default timezone Etc/UTC
 ENV DEBIAN_FRONTEND noninteractive 
