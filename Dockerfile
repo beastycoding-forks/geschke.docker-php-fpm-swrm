@@ -1,4 +1,4 @@
-FROM ubuntu:hirsute-20211106
+FROM ubuntu:hirsute-20210917
 
 LABEL maintainer="Ralf Geschke <ralf@kuerbis.org>"
 
