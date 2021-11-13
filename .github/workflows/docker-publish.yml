@@ -6,12 +6,13 @@ name: Docker
 # documentation.
 
 on:
-  schedule:
-    - cron: '42 9 * * *'
+  #schedule:
+  #  - cron: '42 9 * * *'
   push:
-    #branches: 
-    #  - 'ubuntu*'
-    # Publish semver tags as releases.
+    branches: 
+      - master
+    # Publish semver tags as releases. 
+    # Every release in a branch will be tagged, so it is not necessary to specify additional branches.
     #tags: [ 'v*.*.*' ]
     tags: 
       - 'v*'
@@ -19,14 +20,16 @@ on:
     branches: [ master ]
 
 env:
-  # Use docker.io for Docker Hub if empty
+  # Use GitHub Container Repository
   REGISTRY_GITHUB: ghcr.io
 
+  # Use docker.io for Docker Hub if empty
   REGISTRY_DOCKER_HUB: docker.io
 
   # github.repository as <account>/<repo>
   IMAGE_NAME: geschke/php-fpm-swrm
   # was: ${{ github.repository }}
+  # GitHub repository is named as "docker-<image_name>" to differ Docker images from other contents
 
 
 jobs:
@@ -54,8 +57,10 @@ jobs:
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
           echo "image name: ${{ env.IMAGE_NAME }}"
 
-      # Login against a Docker registry except on PR
+      # Login against an container registry except on PR
       # https://github.com/docker/login-action
+      
+      # Login to GitHub Container Repository
       - name: Log into registry ${{ env.REGISTRY_GITHUB }}
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
@@ -74,17 +79,13 @@ jobs:
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
-      #  type=match,pattern=v(.*)
-      
-      # type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
-      #      type=ref,event=tag,enable=${{ startsWith(GitHub.ref, 'v') }}
-
       
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v3
         with:
           tags: |
+            type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
             type=match,pattern=v(.*),group=1
           flavor: |
             latest=false
@@ -94,9 +95,9 @@ jobs:
         id: showinfo
         run: |
           echo "GitHub event name:  ${{ github.event_name }}"
-          echo "tags:               ${{ steps.meta.outputs.tags }}"
-          echo "labels:             ${{ steps.meta.outputs.labels }}"
-          echo "image name: ${{ env.IMAGE_NAME }}"
+          echo "Tags:               ${{ steps.meta.outputs.tags }}"
+          echo "Labels:             ${{ steps.meta.outputs.labels }}"
+          echo "Image name: ${{ env.IMAGE_NAME }}"
 
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -104,7 +105,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          #push: true
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
