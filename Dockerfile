@@ -1,13 +1,13 @@
-FROM ubuntu:focal-20211006
+FROM ubuntu:impish-20211102
 
 LABEL maintainer="Ralf Geschke <ralf@kuerbis.org>"
 
-LABEL last_changed="2021-11-10"
+LABEL last_changed="2021-11-15"
 
 # necessary to set default timezone Etc/UTC
 ENV DEBIAN_FRONTEND noninteractive 
 
-# Install PHP 7.4 with some libraries
+# Install PHP 8.0 with some libraries
 RUN apt-get update \
 	&& apt-get -y upgrade \
 	&& apt-get -y dist-upgrade \
@@ -35,7 +35,7 @@ RUN cd /tmp/ \
 
 # taken from official Docker PHP image
 RUN set -ex \
-	&& cd /etc/php/7.4/fpm \
+	&& cd /etc/php/8.0/fpm \
 	#&& mkdir /run/php \
 	&& { \
 	echo '[global]'; \
@@ -63,4 +63,4 @@ WORKDIR /usr/share/nginx/html
 
 EXPOSE 9000
 
-CMD ["php-fpm7.4"]
+CMD ["php-fpm8.0"]
