@@ -2,7 +2,7 @@ FROM ubuntu:impish-20211102
 
 LABEL maintainer="Ralf Geschke <ralf@kuerbis.org>"
 
-LABEL last_changed="2021-11-15"
+LABEL last_changed="2021-11-27"
 
 # necessary to set default timezone Etc/UTC
 ENV DEBIAN_FRONTEND noninteractive 
